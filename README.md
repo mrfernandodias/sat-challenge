@@ -7,6 +7,7 @@ Sistema de gestão de clientes desenvolvido em Laravel, utilizando boas prática
 -   **PHP 8.2+**
 -   **Laravel 12**
 -   **MySQL/SQLite**
+-   **Laravel Sanctum** (autenticação API)
 -   **Vite** (bundler de assets)
 -   **AdminLTE 4** (template administrativo)
 -   **DataTables** (Bootstrap 5)
@@ -19,12 +20,18 @@ O projeto segue uma arquitetura em camadas com separação clara de responsabili
 ```
 app/
 ├── Domain/                    # Lógica de negócio (agnóstica de framework)
-│   └── Customer/
-│       ├── DTOs/              # Data Transfer Objects
-│       ├── Repositories/      # Interfaces e implementações
-│       └── Services/          # Regras de negócio
+│   ├── Customer/
+│   │   ├── DTOs/              # Data Transfer Objects
+│   │   ├── Repositories/      # Interfaces e implementações
+│   │   └── Services/          # Regras de negócio
+│   └── User/
+│       ├── DTOs/
+│       ├── Repositories/
+│       └── Services/
 ├── Http/
 │   ├── Controllers/           # Controladores (orquestração)
+│   │   ├── Api/               # Controllers da API RESTful
+│   │   └── Auth/              # Controllers de autenticação
 │   ├── Requests/              # Form Requests (validação)
 │   └── Resources/             # API Resources (transformação)
 └── Providers/
@@ -85,10 +92,10 @@ DB_USERNAME=seu_usuario
 DB_PASSWORD=sua_senha
 ```
 
-6. Execute as migrations:
+6. Execute as migrations e seeders:
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 7. Compile os assets:
@@ -104,6 +111,13 @@ php artisan serve
 ```
 
 Acesse: http://localhost:8000
+
+### Credenciais Padrão
+
+Após executar o seeder, use as seguintes credenciais para acessar o sistema:
+
+-   **Email:** `admin@admin.com`
+-   **Senha:** `admin`
 
 ## Desenvolvimento
 
@@ -133,19 +147,53 @@ php artisan test --coverage
 
 ```
 tests/
-├── Feature/Customer/          # Testes de integração
-│   ├── CreateCustomerTest.php
-│   ├── ListCustomerTest.php
-│   ├── UpdateCustomerTest.php
-│   └── DeleteCustomerTest.php
+├── Feature/
+│   ├── Api/                   # Testes da API RESTful
+│   │   ├── AuthTest.php
+│   │   └── CustomerApiTest.php
+│   ├── AuthTest.php           # Testes de autenticação web
+│   ├── UserTest.php           # Testes do CRUD de usuários
+│   └── Customer/              # Testes Web de clientes
+│       ├── CreateCustomerTest.php
+│       ├── ListCustomerTest.php
+│       ├── UpdateCustomerTest.php
+│       └── DeleteCustomerTest.php
 └── Unit/Customer/             # Testes unitários
     ├── CustomerDTOTest.php
     └── CustomerResourceTest.php
 ```
 
-## API Endpoints
+## Autenticação
 
-### Customers
+### Web (Session)
+
+O sistema web utiliza autenticação baseada em sessão. Todas as rotas são protegidas e requerem login.
+
+| Rota         | Descrição       |
+| ------------ | --------------- |
+| GET /login   | Página de login |
+| POST /login  | Processar login |
+| POST /logout | Encerrar sessão |
+
+### API (Token - Sanctum)
+
+A API utiliza tokens de autenticação via Laravel Sanctum.
+
+## Módulos
+
+### Dashboard
+
+O dashboard exibe métricas sobre os clientes cadastrados:
+
+-   **Total de Clientes** - Quantidade total de registros
+-   **Novos este Mês** - Clientes cadastrados no mês atual
+-   **Novos Hoje** - Clientes cadastrados no dia atual
+-   **Estados Atendidos** - Quantidade de estados distintos
+-   **Gráfico de Cadastros por Mês** - Evolução dos últimos 6 meses
+-   **Gráfico de Clientes por Estado** - Distribuição geográfica (top 10)
+-   **Últimos Cadastros** - Lista dos 5 clientes mais recentes
+
+### Gerenciamento de Clientes
 
 | Método | Endpoint          | Descrição                    |
 | ------ | ----------------- | ---------------------------- |
@@ -154,6 +202,68 @@ tests/
 | POST   | `/customers`      | Criar cliente                |
 | PUT    | `/customers/{id}` | Atualizar cliente            |
 | DELETE | `/customers/{id}` | Excluir cliente              |
+
+### Gerenciamento de Usuários
+
+| Método | Endpoint      | Descrição                    |
+| ------ | ------------- | ---------------------------- |
+| GET    | `/users`      | Página de listagem           |
+| GET    | `/users/data` | Dados para DataTables (JSON) |
+| POST   | `/users`      | Criar usuário                |
+| PUT    | `/users/{id}` | Atualizar usuário            |
+| DELETE | `/users/{id}` | Excluir usuário              |
+
+**Obs:** Não é permitido excluir o próprio usuário logado.
+
+## API RESTful (Sanctum)
+
+Endpoints protegidos por autenticação via token.
+
+#### Autenticação
+
+| Método | Endpoint          | Descrição               | Auth |
+| ------ | ----------------- | ----------------------- | ---- |
+| POST   | `/api/login`      | Gerar token de acesso   | Não  |
+| POST   | `/api/logout`     | Revogar token atual     | Sim  |
+| POST   | `/api/logout-all` | Revogar todos os tokens | Sim  |
+| GET    | `/api/user`       | Dados do usuário logado | Sim  |
+
+#### Customers
+
+| Método | Endpoint              | Descrição         | Auth |
+| ------ | --------------------- | ----------------- | ---- |
+| GET    | `/api/customers`      | Listar clientes   | Sim  |
+| GET    | `/api/customers/{id}` | Detalhes cliente  | Sim  |
+| POST   | `/api/customers`      | Criar cliente     | Sim  |
+| PUT    | `/api/customers/{id}` | Atualizar cliente | Sim  |
+| DELETE | `/api/customers/{id}` | Excluir cliente   | Sim  |
+
+#### Autenticação na API
+
+1. Faça login para obter o token:
+
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "password", "device_name": "curl"}'
+```
+
+Resposta:
+
+```json
+{
+    "message": "Login realizado com sucesso.",
+    "token": "1|abc123...",
+    "user": { "id": 1, "name": "User", "email": "user@example.com" }
+}
+```
+
+2. Use o token nas requisições:
+
+```bash
+curl -X GET http://localhost:8000/api/customers \
+  -H "Authorization: Bearer 1|abc123..."
+```
 
 ### Exemplo de Request (POST /customers)
 
@@ -194,6 +304,35 @@ tests/
 }
 ```
 
+## Testando a API com Postman
+
+Uma collection do Postman está disponível para facilitar os testes da API.
+
+### Importando a Collection
+
+1. Abra o Postman
+2. Clique em **Import** (ou `Ctrl+O`)
+3. Selecione o arquivo `docs/postman/SAT-API.postman_collection.json`
+4. A collection "SAT API - Customer Management" será adicionada
+
+### Como usar
+
+1. **Execute o request "Login"** primeiro para autenticar
+    - O token será salvo automaticamente na variável `token`
+2. Use os demais endpoints normalmente - a autenticação já estará configurada
+
+### Variáveis da Collection
+
+| Variável   | Valor Padrão                | Descrição                                                     |
+| ---------- | --------------------------- | ------------------------------------------------------------- |
+| `base_url` | `http://localhost:8000/api` | URL base da API                                               |
+| `token`    | (vazio)                     | Token de autenticação (preenchido automaticamente após login) |
+
+### Credenciais para teste
+
+-   **Email:** `admin@admin.com`
+-   **Senha:** `admin`
+
 ## Estrutura do Projeto
 
 ```
@@ -215,7 +354,8 @@ sat-challenge/
 │   │   └── services/          # Serviços reutilizáveis
 │   └── views/                 # Blade templates
 ├── routes/
-│   └── web.php                # Rotas da aplicação
+│   ├── web.php                # Rotas Web
+│   └── api.php                # Rotas API RESTful
 └── tests/                     # Testes automatizados
 ```
 

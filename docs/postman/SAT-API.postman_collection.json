@@ -1,0 +1,363 @@
+{
+  "info": {
+    "_postman_id": "sat-api-collection",
+    "name": "SAT API - Customer Management",
+    "description": "Collection para testar a API RESTful do sistema SAT Challenge.\n\n## Como usar:\n1. Execute o request \"Login\" primeiro para obter o token\n2. O token será salvo automaticamente na variável `token`\n3. Use os demais endpoints normalmente\n\n## Credenciais padrão:\n- Email: admin@admin.com\n- Senha: admin",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Endpoints de autenticação",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "    console.log('Token salvo com sucesso!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@admin.com\",\n    \"password\": \"admin\",\n    \"device_name\": \"Postman\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Autentica o usuário e retorna um token Bearer.\n\nO token é salvo automaticamente na variável `token` da collection."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            },
+            "description": "Retorna os dados do usuário autenticado."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            },
+            "description": "Revoga o token atual."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout All Devices",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/logout-all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "logout-all"
+              ]
+            },
+            "description": "Revoga todos os tokens do usuário em todos os dispositivos."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "description": "CRUD de clientes",
+      "item": [
+        {
+          "name": "List All Customers",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/customers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers"
+              ]
+            },
+            "description": "Lista todos os clientes cadastrados."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/customers/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "1"
+              ]
+            },
+            "description": "Retorna os detalhes de um cliente específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"João da Silva\",\n    \"phone\": \"(11) 99999-9999\",\n    \"cpf\": \"123.456.789-00\",\n    \"email\": \"joao@example.com\",\n    \"cep\": \"01310-100\",\n    \"street\": \"Avenida Paulista\",\n    \"neighborhood\": \"Bela Vista\",\n    \"number\": \"1000\",\n    \"complement\": \"Sala 101\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/customers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers"
+              ]
+            },
+            "description": "Cria um novo cliente.\n\n**Campos obrigatórios:**\n- name\n- phone\n- cpf (único)\n- email\n- cep\n- street\n- neighborhood\n- number\n- city\n- state (2 caracteres)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"João da Silva Atualizado\",\n    \"phone\": \"(11) 88888-8888\",\n    \"cpf\": \"123.456.789-00\",\n    \"email\": \"joao.atualizado@example.com\",\n    \"cep\": \"01310-100\",\n    \"street\": \"Avenida Paulista\",\n    \"neighborhood\": \"Bela Vista\",\n    \"number\": \"2000\",\n    \"complement\": \"Sala 202\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "1"
+              ]
+            },
+            "description": "Atualiza um cliente existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Customer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/customers/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "1"
+              ]
+            },
+            "description": "Remove um cliente."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
