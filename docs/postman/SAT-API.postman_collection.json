@@ -7,11 +7,6 @@
   },
   "variable": [
     {
-      "key": "base_url",
-      "value": "http://localhost:8000/api",
-      "type": "string"
-    },
-    {
       "key": "token",
       "value": "",
       "type": "string"
@@ -56,11 +51,17 @@
               "raw": "{\n    \"email\": \"admin@admin.com\",\n    \"password\": \"admin\",\n    \"device_name\": \"Postman\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/login",
+              "raw": "http://127.0.0.1:8000/api/login",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "login"
               ]
             },
@@ -89,11 +90,17 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/user",
+              "raw": "http://127.0.0.1:8000/api/user",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "user"
               ]
             },
@@ -122,11 +129,17 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/logout",
+              "raw": "http://127.0.0.1:8000/api/logout",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "logout"
               ]
             },
@@ -155,11 +168,17 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/logout-all",
+              "raw": "http://127.0.0.1:8000/api/logout-all",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "logout-all"
               ]
             },
@@ -194,11 +213,17 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/customers",
+              "raw": "http://127.0.0.1:8000/api/customers",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "customers"
               ]
             },
@@ -227,11 +252,17 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/customers/1",
+              "raw": "http://127.0.0.1:8000/api/customers/1",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "customers",
                 "1"
               ]
@@ -269,11 +300,17 @@
               "raw": "{\n    \"name\": \"João da Silva\",\n    \"phone\": \"(11) 99999-9999\",\n    \"cpf\": \"123.456.789-00\",\n    \"email\": \"joao@example.com\",\n    \"cep\": \"01310-100\",\n    \"street\": \"Avenida Paulista\",\n    \"neighborhood\": \"Bela Vista\",\n    \"number\": \"1000\",\n    \"complement\": \"Sala 101\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/customers",
+              "raw": "http://127.0.0.1:8000/api/customers",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "customers"
               ]
             },
@@ -310,11 +347,17 @@
               "raw": "{\n    \"name\": \"João da Silva Atualizado\",\n    \"phone\": \"(11) 88888-8888\",\n    \"cpf\": \"123.456.789-00\",\n    \"email\": \"joao.atualizado@example.com\",\n    \"cep\": \"01310-100\",\n    \"street\": \"Avenida Paulista\",\n    \"neighborhood\": \"Bela Vista\",\n    \"number\": \"2000\",\n    \"complement\": \"Sala 202\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/customers/1",
+              "raw": "http://127.0.0.1:8000/api/customers/1",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "customers",
                 "1"
               ]
@@ -344,11 +387,17 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/customers/1",
+              "raw": "http://127.0.0.1:8000/api/customers/1",
+              "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "customers",
                 "1"
               ]
