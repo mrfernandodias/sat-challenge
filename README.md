@@ -104,7 +104,13 @@ php artisan migrate --seed
 npm run build
 ```
 
-8. Inicie o servidor:
+8. Configure as permissões (Linux/Mac):
+
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+9. Inicie o servidor:
 
 ```bash
 php artisan serve
@@ -118,6 +124,54 @@ Após executar o seeder, use as seguintes credenciais para acessar o sistema:
 
 -   **Email:** `admin@admin.com`
 -   **Senha:** `admin`
+
+## Instalação com Docker (Alternativa)
+
+Se preferir usar Docker, siga estes passos:
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/mrfernandodias/sat-challenge.git
+cd sat-challenge
+```
+
+2. Copie o arquivo de ambiente para Docker:
+
+```bash
+cp .env.docker .env
+```
+
+3. Suba os containers:
+
+```bash
+docker-compose up -d --build
+```
+
+4. Execute os comandos de setup:
+
+```bash
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan migrate --seed
+```
+
+5. Acesse: http://localhost:8000
+
+### Comandos úteis do Docker
+
+```bash
+# Ver logs
+docker-compose logs -f
+
+# Parar containers
+docker-compose down
+
+# Executar testes
+docker-compose exec app php artisan test
+
+# Acessar o container
+docker-compose exec app bash
+```
 
 ## Desenvolvimento
 
