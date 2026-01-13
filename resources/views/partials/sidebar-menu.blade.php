@@ -8,7 +8,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('customers') }}" class="nav-link">
+        <a href="{{ route('customers.index') }}" class="nav-link">
             <i class="nav-icon bi bi-people"></i>
             <p>Clientes</p>
         </a>
