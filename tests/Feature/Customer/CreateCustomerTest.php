@@ -1,10 +1,17 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\postJson;
 
+uses(RefreshDatabase::class);
+
 beforeEach(function () {
+  $this->user = User::factory()->create();
+  $this->actingAs($this->user);
+
   $this->validData = [
     'name' => 'João da Silva',
     'phone' => '(11) 99999-9999',

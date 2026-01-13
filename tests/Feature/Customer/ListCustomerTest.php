@@ -1,8 +1,17 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\getJson;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+  $this->user = User::factory()->create();
+  $this->actingAs($this->user);
+});
 
 describe('GET /customers/data', function () {
   it('returns empty data when no customers exist', function () {
@@ -65,9 +74,10 @@ describe('GET /customers/data', function () {
 
     $response = getJson('/customers/data');
 
-    expect($response->json('data.0.full_address'))->toContain('Rua das Flores');
-    expect($response->json('data.0.full_address'))->toContain('123');
-    expect($response->json('data.0.full_address'))->toContain('São Paulo');
+    $fullAddress = $response->json('data.0.full_address');
+    expect($fullAddress)->toContain('Rua das Flores');
+    expect($fullAddress)->toContain('123');
+    expect($fullAddress)->toContain('São Paulo');
   });
 });
 

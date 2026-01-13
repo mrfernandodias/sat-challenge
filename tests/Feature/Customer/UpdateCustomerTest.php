@@ -1,10 +1,17 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\putJson;
 
+uses(RefreshDatabase::class);
+
 beforeEach(function () {
+  $this->user = User::factory()->create();
+  $this->actingAs($this->user);
+
   $this->customer = Customer::factory()->create([
     'name' => 'Nome Original',
     'cpf' => '111.111.111-11',
