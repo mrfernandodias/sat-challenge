@@ -4,7 +4,7 @@ Sistema de gestão de clientes desenvolvido em Laravel, utilizando boas prática
 
 ## Tecnologias Utilizadas
 
--   **PHP 8.2+**
+-   **PHP 8.4+**
 -   **Laravel 12**
 -   **MySQL/SQLite**
 -   **Laravel Sanctum** (autenticação API)
@@ -48,7 +48,7 @@ app/
 
 ## Requisitos
 
--   PHP >= 8.2
+-   PHP >= 8.4
 -   Composer
 -   Node.js >= 18
 -   MySQL ou SQLite
@@ -145,14 +145,14 @@ cp .env.docker .env
 3. Suba os containers:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
-4. Execute os comandos de setup:
+4. Execute as migrations e seeders:
 
 ```bash
-docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan migrate --seed
+docker exec sat-app cp .env.docker .env
+docker exec sat-app php artisan migrate --seed
 ```
 
 5. Acesse: http://localhost:8000
@@ -161,16 +161,16 @@ docker-compose exec app php artisan migrate --seed
 
 ```bash
 # Ver logs
-docker-compose logs -f
+docker compose logs -f
 
 # Parar containers
-docker-compose down
+docker compose down
 
 # Executar testes
-docker-compose exec app php artisan test
+docker exec sat-app php artisan test
 
 # Acessar o container
-docker-compose exec app bash
+docker exec -it sat-app bash
 ```
 
 ## Desenvolvimento
