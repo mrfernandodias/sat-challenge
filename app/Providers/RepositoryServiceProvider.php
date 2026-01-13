@@ -4,26 +4,29 @@ namespace App\Providers;
 
 use App\Domain\Customer\Repositories\CustomerRepositoryInterface;
 use App\Domain\Customer\Repositories\EloquentCustomerRepository;
+use App\Domain\User\Repositories\EloquentUserRepository;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-  /**
-   * All repository bindings.
-   */
-  protected array $repositories = [
-    CustomerRepositoryInterface::class => EloquentCustomerRepository::class,
-  ];
+    /**
+     * All repository bindings.
+     */
+    protected array $repositories = [
+        CustomerRepositoryInterface::class => EloquentCustomerRepository::class,
+        UserRepositoryInterface::class => EloquentUserRepository::class,
+    ];
 
-  public function register(): void
-  {
-    foreach ($this->repositories as $interface => $implementation) {
-      $this->app->bind($interface, $implementation);
+    public function register(): void
+    {
+        foreach ($this->repositories as $interface => $implementation) {
+            $this->app->bind($interface, $implementation);
+        }
     }
-  }
 
-  public function boot(): void
-  {
-    //
-  }
+    public function boot(): void
+    {
+        //
+    }
 }
