@@ -11,6 +11,9 @@ Sistema de gestão de clientes desenvolvido em Laravel, utilizando boas prática
 -   **Vite** (bundler de assets)
 -   **AdminLTE 4** (template administrativo)
 -   **DataTables** (Bootstrap 5)
+-   **SweetAlert2** (alertas e confirmações)
+-   **ApexCharts** (gráficos do dashboard)
+-   **jQuery** (manipulação DOM)
 -   **Pest PHP** (testes automatizados)
 
 ## Arquitetura
@@ -443,7 +446,3 @@ createMask(document.getElementById("cep"), masks.cep); // 12345-678
 createMask(document.getElementById("cpf"), masks.cpf); // 123.456.789-00
 createMask(document.getElementById("phone"), masks.phone); // (11) 99999-9999
 ```
-
-## Licença
-
-Este projeto está sob a licença MIT.
