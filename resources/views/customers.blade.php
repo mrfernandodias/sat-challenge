@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
+@section('title', 'Clientes')
+@section('page-title', 'Clientes')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Clientes</li>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">Customers List</h3>
+                    <h3 class="card-title mb-0">Lista de Clientes</h3>
                     <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasCustomer">
                         <i class="bi bi-plus-lg"></i> Novo Cliente
